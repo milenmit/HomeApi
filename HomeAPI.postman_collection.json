@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "d47cf180-8cbe-4a57-b6b0-07c0972f0844",
+		"name": "HomeAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "setAddress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d01a51d9-299a-463a-b28e-cb380849bd48",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"",
+							"var jsonData = JSON.parse(responseBody)",
+							"var id = jsonData.id",
+							"",
+							"pm.globals.set(\"createdID\", id);",
+							"",
+							"console.log(id)",
+							"",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Pleven\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n \"Street\": \"10-th December\",\r\n  \"City\": \"Pleven\",\r\n  \"zip\": 5800,\r\n  \"phone_number\": \"064800697\"\r\n }"
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIAdresses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a841fab4-3aa2-4c49-9243-0ac288f247dc",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"    ",
+							"pm.test(\"check city\", function () {",
+							"  var jsonData = JSON.parse(responseBody)",
+							"    var city = jsonData.City",
+							"   ",
+							"    pm.expect(jsonData.City).to.eql(\"Pleven\");",
+							"});  ",
+							"   pm.test(\"checkID\", function () {",
+							"   var jsonData = JSON.parse(responseBody)",
+							"   var testId = jsonData.id",
+							"    console.log(testId)",
+							"    ",
+							" var createdID = pm.globals.get(\"createdID\");",
+							"  pm.expect(testId).to.eql(createdID);",
+							"",
+							"",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/{{createdID}}",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						"{{createdID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAddress",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Street\": \"10-th\",\r\n  \"City\": \"Pleven_Dage\",\r\n  \"zip\": 5800,\r\n  \"phone_number\": \"064800697\"\r\n}"
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/{{createdID}}",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						"{{createdID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIAdressesAfterUpdate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a841fab4-3aa2-4c49-9243-0ac288f247dc",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    ",
+							"pm.test(\"check city\", function () {",
+							"  var jsonData = JSON.parse(responseBody)",
+							"    var city = jsonData.City",
+							"     console.log(city)",
+							"    pm.expect(jsonData.City).to.eql(\"Pleven_Dage\");",
+							"   ",
+							"});",
+							"",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/{{createdID}}",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						"{{createdID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAddress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8465aa28-13bf-4210-850b-0a471c17a8b9",
+						"exec": [
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\"id\" : \"5\"\n\n}"
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/{{createdID}}",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						"{{createdID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getInfoAfterDelete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3039b42f-cfce-421a-917a-2c97f75fa464",
+						"exec": [
+							"pm.test(\"Created id is deleted\", function () {",
+							"    pm.response.to.have.status(\"Not Found\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://milen.gq:3000/api/addresses/{{createdID}}",
+					"protocol": "http",
+					"host": [
+						"milen",
+						"gq"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"addresses",
+						"{{createdID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
